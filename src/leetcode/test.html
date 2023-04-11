@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <ul class="list">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+    </div>
+</body>
+<script>
+// 增加dep对象 用来收集依赖和触发依赖
+const dep = {
+    map: Object.create(null),
+    // 收集
+    collect(dataProp, updateFn) {
+      if (!this.map[dataProp]) {
+        this.map[dataProp] = []
+      }
+      this.map[dataProp].push(updateFn)
+    },
+    // 触发
+    trigger(dataProp) {
+      this.map[dataProp] && this.map[dataProp].forEach(updateFn => {
+        updateFn()
+      })
+    }
+}
+
+ // 编译函数
+ function compile() {
+    let app = document.getElementById('app')
+    // 1.拿到app下所有的子元素
+    const nodes = app.childNodes   //  [text, input, text]
+    //2.遍历所有的子元素
+    nodes.forEach(node => {
+      // nodeType为1为元素节点
+      if (node.nodeType === 1) {
+        const attrs = node.attributes
+        // 遍历所有的attrubites找到 v-model
+        Array.from(attrs).forEach(attr => {
+          const dirName = attr.nodeName
+          const dataProp = attr.nodeValue
+          console.log(dirName, dataProp)
+          if (dirName === 'v-text') {
+            console.log(`更新了${dirName}指令,需要更新的属性为${dataProp}`)
+            node.innerText = data[dataProp]
+            // 收集更新函数
+            dep.collect(dataProp, () => {
+              node.innerText = data[dataProp]
+            })
+          }
+        })
+      }
+    })
+ }
+ function defineReactive(data, key, value) {
+    Object.defineProperty(data, key, {
+      get() {
+        return value
+      },
+      set(newValue) {
+        // 更新视图
+        if (newValue === value) return
+        value = newValue
+        // 再次编译要放到新值已经变化之后只更新当前的key
+        dep.trigger(key)
+      }
+    })
+}
+
+const Father = function(name) {
+    this.name = name
+    console.log(this)
+}
+
+let son = new Father('张三');
+</script>
+</html>

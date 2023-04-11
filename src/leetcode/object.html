@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    let a = {
+        name:'zhangsan',
+        sex:'man'
+    }
+    // 1 检测属性是否存在，返回值为true或false
+    // console.log(a.hasOwnProperty('name'))
+    // console.log(a.hasOwnProperty('age'))
+    let b = {
+        name:'lisi',
+        age:12
+    }
+    let assignRes = {}
+    // 2 对象合并   属性名相同时，后面覆盖前面
+    Object.assign(assignRes,a,b)
+    // let assignRes1= Object.assign(a,b)
+    // console.log('assignRes:',assignRes,'a:',a)
+    // let d = {...a,...b}
+    // d.name='wangwu'
+    assignRes.name = 'wangwu'
+    // console.log('assignRes:',assignRes.name,'a:',a.name,'b:',b.name)
+    // console.log(d);
+    // Object.defineProperty(d,)
+
+
+    // 递归深拷贝，遍历到基本数据类型然后复制
+    function deepClone(data) {
+        if(typeof data !== 'object') return data;
+        let result = data instanceof Array ? [] : {}
+        for( let i in data) {
+            result[i] = deepClone(data[i])
+        } 
+        return result
+    }
+    const fun = ()=>{console.log('fun');}
+
+    let  cloneUnd = deepClone(undefined);
+    let cloneA = deepClone(a)
+    let cloneFun = deepClone(fun)
+    let cloneNull = deepClone(null)
+    console.log('cloneUnd:', cloneUnd)
+    console.log('a:', a)
+    console.log('cloneNull:', cloneNull)
+    console.log('cloneFun:', cloneFun)
+    // let und = undefined
+    // let nul = null
+    // for(let i in nul){
+    //     console.log(i);
+    // }
+</script>
+</html>
