@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import home from './pages/home/home.vue'
 </script>
 
 <template>
-  <router-link to="/test">test页</router-link>
-  <router-link to="/home">home页</router-link>
   <router-view></router-view>
 </template>
 
