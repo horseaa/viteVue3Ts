@@ -1,8 +1,10 @@
 import copy from './copy'
+import ellipsis from './ellipsis'
 // import longpress from './longpress'
 // 自定义指令
 const directives = {
-  copy
+  copy,
+  ellipsis
 //   longpress,
 }
 

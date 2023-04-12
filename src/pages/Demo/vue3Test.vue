@@ -6,7 +6,7 @@
         {{ comNum }}
         <button @click="changeString"> 改变msg </button>
         <father></father>
-        <p v-copy>一些内容</p>
+        <p v-ellipsis>一些内容xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
         <input type="text" value="1234" v-copy>
         <A></A>
         <B></B>
