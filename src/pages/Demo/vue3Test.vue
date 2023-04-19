@@ -1,13 +1,15 @@
 <template>
     <div>
         <p>vue3Test</p>
-        <el-input v-model = 'number' min="5" max="20"></el-input>
+        <el-input v-model = 'number' min="5" max="20" type="number" ></el-input>
+        <input type="number" v-model="number1" min="5" max="10">
         <br>
         <input type="text" v-model="msg">
         {{ comNum }}
         <button @click="changeString"> 改变msg </button>
         <father></father>
-        <p v-ellipsis @click="getInfo">获取用户信息xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
+        <p v-ellipsis @click="getUserInfo1">自定义ellipsis指令，超出显示省略号</p>
+        <p @click="getFetch">fetch获取信息</p>
         <download></download>
         <upload></upload>
         <input type="text" value="1234" v-copy>
@@ -41,7 +43,8 @@ let person = reactive({
     name: '王一',
     age: 22
 })
-let number = ref("6")
+let number = ref(6)
+let number1 = ref(7)
 let msg = ref('snsslmm')
 // 解构成响应式用toRefs（注意不要用ref）
 let { name, age } = toRefs(person)
@@ -49,9 +52,13 @@ console.log('age', age)
 const comNum = computed(()=>{
     return person.age + 1
 })
+
 const changeString = ()=> {  msg.value = msg.value + 'a' }
 watch(msg, (newVal, oldVal)=>{
     console.log('new',newVal,'old',oldVal)
+})
+watch(number1,(newVal)=>{
+    console.log(newVal,typeof(newVal))
 })
 const { proxy } = getCurrentInstance()
 const getInfo = () =>{
@@ -64,11 +71,18 @@ const getInfo = () =>{
         console.log('err', err)
     })
 }
+const getFetch = ()=>{
+    fetch('http://127.0.0.1:4523/m1/2590596-0-default/user/getUserInfo')
+    .then(res => res.json())
+    .then(res=>{
+        console.log('result', res)
+    })
+}
 onMounted(() => {
     getInfo()
 })
 </script>
 
-<style lang="less" scoped>
+<style scoped>
 
 </style>

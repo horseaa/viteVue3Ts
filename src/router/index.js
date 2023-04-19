@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory,createWebHashHistory } from 'vue-router'
 const routes = [
     {
+        path:'/',
+        redirect: { name: 'vue3Test' }
+    },
+    {
         path:'/home',
         name:'home',
         component: () => import('../pages/home/home.vue')
@@ -14,6 +18,11 @@ const routes = [
         path:'/vue3Test',
         name:'vue3Test',
         component: () => import('../pages/Demo/vue3Test.vue')
+    },
+    {
+        path: '/form',
+        name: 'form',
+        component: () => import('../pages/Demo/form/form.vue')
     }
 ]
 const router = createRouter({
