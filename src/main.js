@@ -8,12 +8,14 @@ import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css'
 import http from '@/http/http.js'
 import { ElMessage } from 'element-plus'
+import ECharts from 'vue-echarts'
 const pinia = createPinia();
 const app = createApp(App);
 app.use(pinia)
 app.use(router)
 app.use(directives)
 app.use(ElementPlus)
+app.component('v-chart', ECharts)
 app.config.globalProperties.$Http = http
 app.config.globalProperties.$Message = ElMessage
 // 自定义指令，简写形式

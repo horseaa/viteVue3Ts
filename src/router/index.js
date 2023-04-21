@@ -23,6 +23,11 @@ const routes = [
         path: '/form',
         name: 'form',
         component: () => import('../pages/Demo/form/form.vue')
+    },
+    {
+        path: '/echart',
+        name: 'echart',
+        component: () => import('../pages/Demo/echarts/index.vue')
     }
 ]
 const router = createRouter({
