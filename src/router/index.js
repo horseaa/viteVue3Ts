@@ -28,6 +28,16 @@ const routes = [
         path: '/echart',
         name: 'echart',
         component: () => import('../pages/Demo/echarts/index.vue')
+    },
+    {
+        path: '/pixi',
+        name: 'pixi',
+        component: () => import('../pages/pixijs/绑定右键事件.vue')
+    },
+    {
+        path: '/tuozhuai',
+        name: 'tuozhuai',
+        component: () => import('../pages/pixijs/拖拽.vue')
     }
 ]
 const router = createRouter({

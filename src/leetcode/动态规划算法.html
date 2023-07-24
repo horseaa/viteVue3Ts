@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    var addStrings = function (num1, num2) {
+      let rever1 = [...num1].reverse();
+      let rever2 = [...num2].reverse();
+      let max;
+      let min;
+      if (num1 >= num2) {
+        max = rever1;
+        min = rever2;
+      } else {
+        max = rever2;
+        min = rever1;
+      }
+      let result = [];
+      // 进位数字
+      let result_item = 0;
+      // 根据最大值遍历, 最小值的相应位置如果没有就补0
+      for (let i = 0; i < max.length; i++) {
+        // 本位数字
+        let loc = 0;
+        let min_value = min[i] === undefined ? 0 : min[i];
+        // 和大于10，进位数字等于1，本位数字取第二位
+        if (+max[i] + +min_value + result_item >= 10) {
+          let string = +max[i] + +min_value + result_item + '';
+          loc = +string.split('')[1];
+          result_item = 1;
+        } else {
+          loc = +max[i] + +min_value + result_item;
+          result_item = 0;
+        }
+        result.push(loc);
+        // 最后一位处理
+        if (i === max.length - 1 && result_item > 0) {
+          result.push(result_item);
+        }
+      }
+      let result1 = result.reverse().join('');
+      console.log('result1', result1);
+      return result1;
+    };
+
+    var canPartition = function (nums) {
+      const totalSum = nums.reduce((previous, current) => {
+        return previous + current;
+      }, 0);
+      if (totalSum % 2 !== 0) return false;
+      const targetSum = totalSum / 2;
+      const dp = Array.from(Array(nums.length), () => Array(targetSum + 1).fill(false));
+      console.log('dp', dp);
+      for (let i = 0; i < nums.length; i++) {
+        dp[i][0] = true;
+      }
+
+      for (let i = 1; i < nums.length; i++) {
+        for (let j = 1; j <= targetSum; j++) {
+          if (j >= nums[i]) {
+            dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i]];
+          } else {
+            dp[i][j] = dp[i - 1][j];
+          }
+        }
+      }
+      console.log('arr', dp);
+      console.log('dp[nums.length - 1][targetSum]', dp[nums.length - 1][targetSum]);
+
+      return dp[nums.length - 1][targetSum];
+    };
+    let arr = [1, 5, 11, 5];
+
+    // 动态规划练习
+    // 1 斐波那契数列    1 1 2 3 5 8  球第n个数
+
+    // 过程   dp[i] 第i个数       递推公式 dp[i] = dp[i-1]+dp[i-2]   初始值dp[0]=1,dp[1]=1   临界值处理 dp[0],dp[1]直接返回
+
+    const feibo = (n) => {
+      const dp = [];
+      dp[0] = 1;
+      dp[1] = 1;
+      if (n === 0 || n === 1) {
+        return dp[n];
+      }
+      for (let i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+        console.log('i', i, 'dp', dp[i]);
+      }
+      console.log('dp', dp[n]);
+      return dp[n];
+    };
+    // feibo(5);
+
+    const feibo1 = (n) => {
+      let num1 = 1;
+      let num2 = 1;
+      let sum = 0;
+      if (n === 0 || n === 1) {
+        return 1;
+      }
+      for (let i = 2; i <= n; i++) {
+        sum = num1 + num2;
+        num1 = num2;
+        num2 = sum;
+        console.log('i', i, 'sum', sum);
+      }
+      console.log('result', sum);
+      return sum;
+    };
+    // feibo1(5);
+
+    // 2爬楼梯  一次可以爬1或者2阶,问爬到n层有多少种方法
+    const palouti = () => {};
+
+    // // 3爬楼梯    最小花费    cost[10,15,20]       题意不清 忽略吧
+    // // dp[i]  到达i台阶时的最小花费
+    // // n=3
+    // const palouti1 = (n) => {
+    //   const cost = [10, 15, 20];
+    //   let dp = [];
+    //   dp[0] = 0;
+    //   dp[1] = 0;
+    //   for (let i = 2; i <= n; i++) {
+    //     dp[i] = Math.min(dp[i - 2] + cost[i - 1], dp[i - 1] + cost[i - 2]);
+    //     console.log(i, 'i', 'dpi', dp[i]);
+    //   }
+    //   return dp[n];
+    // };
+    // palouti1(3);
+    // canPartition(arr);
+
+    // 路径问题    问题描述        从起点（0,0）到终点（i,j）,每次走一个，只能向右或向下，有多少种走法
+    // 分析         dp[i][j]表示到点【i,j】的所有走法， 只能从dp[i-1][j]或者dp[i][j-1]到达，所以dp[i][j]=  dp[i-1][j] + dp[i][j-1]    初始化：dp[0][j]=1   dp[i][0]=1   ,即到达dp[0][j]只有一种走法,即从它的左边过来
+
+    const router1 = (m, n) => {
+      let dp = Array.from({ length: m + 1 }, () => {
+        return [];
+      });
+      console.log('dp', dp);
+      for (let i = 1; i <= m; i++) {
+        dp[i][0] = 1;
+        for (let j = 1; j <= n; j++) {
+          dp[0][j] = 1;
+          dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+          console.log('i,j', i, j, 'dp[i][j]', dp[i][j]);
+        }
+      }
+    };
+    // router1(5, 5);
+
+    // 路径问题2   添加障碍物       将障碍物设为 0        注意点：初始化
+    // 下面是障碍物坐标
+    let arr1 = [
+      [0, 2],
+      [0, 3],
+      [3, 0],
+      [2, 5]
+    ];
+
+    const router2 = (m, n, ...args) => {
+      let arr = [...args];
+      let arr_y = arr.filter((item) => {
+        return item[1] === 0;
+      });
+      let arr_x = arr.filter((item) => {
+        return item[0] === 0;
+      });
+      // y0为拿到的y为0的最小障碍物坐标  x0为x为0的最小障碍物坐标
+      let y0 = arr_y.sort((a, b) => a[1] - b[1])[0];
+      let x0 = arr_x.sort((a, b) => a[0] - b[0])[0];
+      console.log('y0', y0);
+      let dp = Array.from({ length: m + 1 }, () => {
+        return [];
+      });
+      console.log('dp', dp);
+      for (let i = 1; i <= m; i++) {
+        if (i >= y0[1]) {
+          dp[i][0] = 1;
+        } else {
+          dp[i][0] = 0;
+        }
+        console.log('i', i, 'dp[i][0]', dp[i][0]);
+        for (let j = 1; j <= n; j++) {
+          if (j >= x0[1]) {
+            dp[0][j] = 0;
+          } else {
+            dp[0][j] = 1;
+          }
+          dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+          if (arr.some((item) => JSON.stringify(item) === `[${i},${j}]`)) {
+            console.log('xxxxx', 'i,j', i, j);
+            dp[i][j] = 0;
+          }
+          return dp[m][n];
+        }
+      }
+    };
+    // router2(5, 5, ...arr1);
+
+    // 将一个整数拆分，使拆分后的数相乘积最大
+    //分析  dp[i]表示将i拆分后 最大的乘积    dp[i] = j * dp[i-j]    初始化：dp[0]=0  dp[1] =0
+    const integerBreak = (num) => {
+      const dp = new Array(num + 1).fill(0);
+      dp[1] = 1;
+      for (let i = 2; i <= num; i++) {
+        for (let j = 1; j < i; j++) {
+          dp[i] = Math.max(j * (i - j), j * dp[i - j], dp[i]);
+          console.log('imax:', i, 'j:', j, `dp[${i}]`, dp[i]);
+        }
+      }
+      console.log('dp[num]', dp[num]);
+      return dp[num];
+    };
+    // integerBreak(10);
+
+    // 01背包    问题描述。有1个容量（最大承重）为m的背包，另有n种物品，物品有重量以及价值，任选几种物品放入背包（每种物品只有一个），使得背包价值最大
+    // 物品 0    重量1    价值15
+    // 物品 1    重量3    价值20
+    // 物品 2    重量4    价值30
+    // const weight = [1, 3, 4];
+    // const value = [15, 20, 30];
+    // 分析
+    // dp[i][j]含义  放0——i种物品时容量j背包的最大价值
+    // 递推公式 dp[i][j] = Math.max(dp[i-1][j],(dp[i-1][j-weight[i-1]]+value[i]))
+    // dp[i-1][j] 是0——i-1种物品的最大值。           dp[i-1][j-weight[i-1]] + value[i] 是0——i-1种物品，背包重量j-weight[i]时的最大重量。           max处理可以看做是第i-1行的最大值和第i行的最大值    进行比较。
+    // 初始化    j为0时  初始为0        i为0时  初始为 value[0] *  Math.floor(j/weight[0])
+    const maxValue = (num, cap) => {
+      const weight = [1, 4, 3];
+      const value = [15, 30, 20];
+      const dp = Array.from({ length: num + 1 }, () => Array(cap + 1).fill(0));
+      for (let i = 1; i <= num; i++) {
+        for (let j = 1; j <= cap; j++) {
+          dp[1][j] = value[0];
+          if (j >= weight[i - 1]) {
+            dp[i][j] = Math.max(value[i - 1] + dp[i - 1][j - weight[i - 1]], dp[i - 1][j]);
+          } else {
+            dp[i][j] = dp[i - 1][j];
+          }
+          console.log('dp[i - 1][j]', dp[i - 1][j]);
+        }
+      }
+
+      console.log('dp', dp);
+      console.log(' dp[num][cap]', dp[num][cap]);
+      return dp[num][cap];
+    };
+    // maxValue(3, 4);
+
+    function knapsack(weights, values, capacity) {
+      const n = weights.length;
+      const dp = new Array(n + 1).fill(0).map(() => new Array(capacity + 1).fill(0));
+      for (let i = 1; i <= n; i++) {
+        for (let j = 1; j <= capacity; j++) {
+          if (weights[i - 1] <= j) {
+            // dp[i-1][j] i-1种物品放入容量j背包的最大价值
+            // dp[i-1][j-weights[i-1]] + values[i-1] 表示i-1种物品放入容量j-weights[i-1]背包的最大价值  加上物品i的价值   注意！！！！values[i-1]表示第i个物品的价值
+            dp[i][j] = Math.max(values[i - 1] + dp[i - 1][j - weights[i - 1]], dp[i - 1][j]);
+          } else {
+            dp[i][j] = dp[i - 1][j];
+          }
+        }
+      }
+      console.log('dp', dp);
+      console.log('dp[n][capacity]', dp[n][capacity]);
+      return dp[n][capacity];
+    }
+    let weights = [1, 3, 4];
+    let values = [15, 20, 30];
+    let capacity = 4;
+    // knapsack(weights, values, capacity);
+
+    // 优化01背包成一维数组
+    // dp[j] 表示背包容量j时最大的价值       dp[j] = Math.max(dp[j-1],dp[j-weights[i-1]]+values[i])
+    const maxValue1 = (m) => {
+      // const weights = [1, 3, 4];
+      // const values = [15, 20, 30];
+      const weights = [1, 5, 11, 5];
+      const values = [1, 5, 11, 5];
+      const dp = Array.from({ length: m + 1 }, () => 0);
+      for (let i = 0; i < values.length; i++) {
+        // 这里为什么是倒序
+        // 在 01 背包问题中，我们需要在容量不超过背包容量的情况下选择物品放入背包，以获得最大的总价值。为了避免重复计算，我们需要确保在计算第 i 个物品放入背包时，只考虑容量为 j ≥ weights[i] 的子问题。
+        // 如果我们使用正序的方式进行循环，计算到第 i 个物品时，较大的容量值 j 可能已经被前面的物品占用，这样会导致计算的结果不正确，因为我们要确保每个物品只能被放入背包一次。而通过倒序的方式，我们可以先计算出较小容量的情况，然后根据之前的计算结果来更新较大容量的值，确保每个物品只能被放入一次，并且不会重复计算相同容量下的情况。
+        for (let j = m; j >= weights[i]; j--) {
+          dp[j] = Math.max(dp[j], dp[j - weights[i]] + values[i]);
+        }
+      }
+      console.log('dp[j]', dp[m]);
+      console.log('dp', dp);
+    };
+    // maxValue1(11);
+
+    // 分割子集问题    描述  [1,5,11,5] 是否能拆成两个数组，使得两个数组和相等。
+    // 01背包问题      容量  sum/2     values[1,5,11,5]  weights[1,5,11,5]
+
+    // dp[j]表示和为j的组是否存在
+    // dp[j-arr[i]] 表示和为j-arr[i]的数组是否存在
+
+    function canSplitArray(arr) {
+      const sum = arr.reduce((a, b) => a + b, 0);
+      if (sum % 2 !== 0) {
+        return false; // 总和为奇数，无法平均分成两部分
+      }
+
+      const target = sum / 2;
+      const dp = new Array(target + 1).fill(false);
+      dp[0] = true;
+
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = target; j >= arr[i]; j--) {
+          dp[j] = dp[j] || dp[j - arr[i]];
+        }
+      }
+      console.log('dp', dp);
+
+      return dp[target];
+    }
+    // canSplitArray([1, 5, 11, 5]);
+    var twoSum = function (nums, target) {
+      let sum = 0;
+      let second = 0;
+      let first = 0;
+      for (let i = 0; i < nums.length; i++) {
+        first = nums[i];
+        for (let j = i + 1; j < nums.length; j++) {
+          second = nums[j];
+          sum = first + second;
+          console.log(i, j, 'first', first);
+          console.log(i, j, 'second', second);
+          console.log(i, j, 'sum', sum);
+
+          if (sum === target) {
+            console.log('sum', sum);
+            console.log([i, j]);
+            // console.log('');
+          }
+        }
+      }
+    };
+    // let arr5 = [9990, 9991, 9992, 9993, 9994, 9995, 9996, 9997, 9998, 9999, 10000];
+    // twoSum(arr5, 19999);
+
+    // var addTwoNumbers = function (l1, l2) {
+    //   const reverse1 = l1.reverse();
+    //   const reverse2 = l2.reverse();
+    //   const num1 = +reverse1.join('');
+    //   const num2 = +reverse2.join('');
+    //   const sum = num1 + num2;
+    //   const result = (sum + '')
+    //     .split('')
+    //     .reverse()
+    //     .map((item) => +item);
+    //   return result;
+    // };
+    // addTwoNumbers([0], [0]);
+
+    // var runningSum = function (nums) {
+    //   let arr = [];
+    //   for (let i = 1; i <= nums.length; i++) {
+    //     let item = nums.slice(0, i);
+    //     item = item.reduce((sum, cur) => {
+    //       return sum + cur;
+    //     }, 0);
+    //     arr.push(item);
+    //   }
+    //   return arr;
+    // };
+    // runningSum([3, 1, 2, 10, 1]);
+
+    const fun11 = (arr) => {
+      let num = 3;
+      let newArr = arr.flat();
+      let result = [];
+      for (let i = 0; i < arr.length; ++i) {
+        let fenmu = i > num ? num : i + 1;
+        let a = i > num ? i : 0;
+        let fenziArr = newArr.slice(a, a + fenmu);
+        let fenzi = newArr.slice(a, a + fenmu).reduce((a, b) => a + b);
+        let item = fenzi / fenmu;
+        result.push(item);
+        console.log('i', i);
+        console.log('fenmu:', fenmu);
+        console.log('fenziArr', fenziArr);
+        console.log('fenzi', fenzi);
+      }
+      console.log('result', result);
+    };
+    let arr11 = [[1], [10], [3], [5]];
+
+    fun11();
+  </script>
+</html>
