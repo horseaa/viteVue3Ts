@@ -1,8 +1,9 @@
 <template>
     <div>
         <p>父文件</p>
+        <son1 :fmsg="fmsg" :toFu=getSon></son1>
         <!-- <son1 :fmsg="fmsg" @toFu = getSon></son1> -->
-        <son2 v-model:fmsg = "fmsg"></son2>
+        <son2 v-model:fmsg="fmsg"></son2>
     </div>
 </template>
 
@@ -14,11 +15,9 @@ const obj_f = {
     name: '王一',
     age: 40
 }
-const getSon = (params)=>{
-    console.log('拿到了',params)
+const getSon = (params) => {
+    console.log('拿到了', params)
 }
 </script>
 
-<style lang="less" scoped>
-
-</style>
+<style lang="less" scoped></style>

@@ -85,9 +85,6 @@ function dragOver(event) {
 
 function dragEnter(event) {
     event.preventDefault();
-    // console.log('dragEnter', event);
-    // currentDom = dropZone
-    // 拖拽元素进入目标区域后的样式变化等处理
 }
 
 function dragLeave(event) {

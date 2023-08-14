@@ -38,6 +38,11 @@ const routes = [
         path: '/tuozhuai',
         name: 'tuozhuai',
         component: () => import('../pages/pixijs/拖拽.vue')
+    },
+    {
+        path: '/YMIRGYG',
+        name: 'YMIRGYG',
+        component: () => import('../pages/pixijs/YMIRGYG.vue')
     }
 ]
 const router = createRouter({

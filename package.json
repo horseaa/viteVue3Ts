@@ -17,6 +17,7 @@
     "mitt": "^3.0.0",
     "pinia": "^2.0.32",
     "pinia-plugin-persist": "^1.0.0",
+    "pixi-filters": "^5.2.1",
     "pixi.js": "^7.2.4",
     "vue": "^3.2.45",
     "vue-echarts": "^6.5.4",
